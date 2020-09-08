@@ -2,6 +2,7 @@ const chalk = require("chalk");
 const yargs = require("yargs");
 
 const getnotes = require("./notes");
+const { string, demandOption } = require("yargs");
 
 // customize yargs version
 yargs.version("1.1.0");
@@ -10,8 +11,21 @@ yargs.version("1.1.0");
 yargs.command({
   command: "add",
   describe: "add a new note",
-  handler: function () {
-    console.log("adding a new note!");
+  builder: {
+    title: {
+      describe: "note title",
+      demandOption: true,
+      type: string,
+    },
+    body: {
+      describe: "body of the note",
+      demandOption: true,
+      type: string,
+    },
+  },
+  handler: function (argv) {
+    console.log("title: " + argv.title);
+    console.log("body: " + argv.body);
   },
 });
 
@@ -42,7 +56,8 @@ yargs.command({
 
 // const command = process.argv[2];
 // console.log(process.argv);
-console.log(yargs.argv);
+// console.log(yargs.argv); //insted of this line we can use yargs.parse()
+yargs.parse();
 
 // if (command === "add") {
 //   //if we run command node app.js "add" then it will execute this part
