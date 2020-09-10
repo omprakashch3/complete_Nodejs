@@ -10,12 +10,13 @@ const getNotes = (notes) => {
 const addNotes = (title, body) => {
   const notes = loadNotes();
   //checking the title if already exists or not
-  const duplicateNotes = notes.filter((note) => note.title === title);
+  //const duplicateNotes = notes.filter((note) => note.title === title); //after finding the desired element it will continue to filter till last elements
+  const duplicateNote = notes.find((note) => note.title === title); //if it will find the desired element it will stop the operation there only
   //const duplicateNotes=notes.filter(function(note){
   //   return note.title===title;
   // })
 
-  if (duplicateNotes.length === 0) {
+  if (!duplicateNote) {
     // now adding element in the notes
     notes.push({
       title: title,
@@ -64,9 +65,21 @@ const listAllNotes = () => {
   });
 };
 
+const readNote = (title) => {
+  const notes = loadNotes();
+  const note = notes.find((note) => note.title === title);
+  if (note) {
+    console.log(chalk.inverse(note.title));
+    console.log(note.body);
+  } else {
+    console.log(chalk.red.inverse("Note not found"));
+  }
+};
+
 module.exports = {
   getNotes: getNotes,
   addNotes: addNotes,
   removeNote: removeNotes,
   listNotes: listAllNotes,
+  readNote: readNote,
 };
