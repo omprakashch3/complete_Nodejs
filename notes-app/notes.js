@@ -1,4 +1,6 @@
 const fs = require("fs");
+const chalk = require("chalk");
+const { title } = require("process");
 
 const getNotes = function (notes) {
   return notes;
@@ -19,9 +21,9 @@ const addNotes = function (title, body) {
     });
     saveNotes(notes);
     // console.log(notes);
-    console.log("new note added!");
+    console.log(chalk.green.inverse("new note added!"));
   } else {
-    console.log("note title taken!");
+    console.log(chalk.red.inverse("note title taken!"));
   }
 };
 
@@ -39,8 +41,23 @@ const loadNotes = function () {
     return [];
   }
 };
+const removeNotes = function (title) {
+  const notes = loadNotes();
+  // console.log(notes);
+  const notesToKeep = notes.filter(function (note) {
+    return note.title !== title;
+  });
+
+  if (notes.length > notesToKeep.length) {
+    console.log(chalk.green.inverse("Note removed"));
+    saveNotes(notesToKeep);
+  } else {
+    console.log(chalk.red.inverse("no note found"));
+  }
+};
 
 module.exports = {
   getNotes: getNotes,
   addNotes: addNotes,
+  removeNote: removeNotes,
 };
